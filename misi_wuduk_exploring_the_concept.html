@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISI WUDUK: Exploring The Concept</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Cinzel untuk sentuhan klasik & futuristik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Three.js untuk Latar Belakang Seni Bina & Simulasi Air 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Tone.js untuk Muzik Latar Menenangkan & Kesan Bunyi Interaktif -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
+    <!-- Canvas Confetti untuk Animasi Kejayaan -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Konfigurasi Warna & Tema Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#060E1F',
+                        midnightLight: '#0D1B38',
+                        royalGold: '#D4AF37',
+                        goldLight: '#F3E5AB',
+                        pearlWhite: '#F8FAFC',
+                        iceBlue: '#38BDF8',
+                        iceLight: '#BAE6FD',
+                        softSilver: '#94A3B8'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* GAYA KUSTOM UNTUK VISUAL DEPTH, GLASSMORPHISM & ANIMASI */
+        body {
+            background-color: #060E1F;
+            color: #F8FAFC;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Corak Geometri Arabesque Latar Halus */
+        .arabesque-pattern {
+            background-image: radial-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px),
+                              radial-gradient(rgba(56, 189, 248, 0.06) 1px, #060E1F 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+
+        /* Panel Glassmorphism Premium */
+        .glass-panel {
+            background: rgba(13, 27, 56, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 0 20px rgba(56, 189, 248, 0.05);
+        }
+
+        .glass-panel-pearl {
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.1) 0%, rgba(13, 27, 56, 0.7) 100%);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Kesan Cahaya Emas & Biru Ais */
+        .gold-glow {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+        }
+        .gold-text-glow {
+            text-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+        }
+        .ice-glow {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+        }
+
+        /* Kad Interaktif 3D Hover */
+        .interactive-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .interactive-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(212, 175, 55, 0.8);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Animasi Terapung (Titisan Air) */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-14px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        /* Animasi Riak Air (Water Ripple) */
+        @keyframes rippleWave {
+            0% { transform: scale(0.85); opacity: 0.7; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+        .ripple-ring {
+            animation: rippleWave 3.5s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+        }
+        .ripple-ring-delay {
+            animation: rippleWave 3.5s cubic-bezier(0.25, 0.8, 0.25, 1) 1.75s infinite;
+        }
+
+        /* Animasi Fade In & Slide Up untuk Scroll Reveal */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Bar Skrol Kustom */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060E1F;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #D4AF37, #38BDF8);
+            border-radius: 10px;
+        }
+
+        /* Kanvas 3D Latar Belakang */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="arabesque-pattern antialiased selection:bg-royalGold selection:text-midnight">
+
+    <!-- Kanvas Latar Belakang 3D (Seni Bina & Kolam Air Reflektif) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- HUD HEADER / PANEL GAMIFIKASI & KAWALAN AUDIO -->
+    <header class="fixed top-0 left-0 right-0 z-40 px-4 py-3 md:px-8 transition-all duration-300">
+        <div class="max-w-7xl mx-auto glass-panel rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Jenama Mini -->
+            <a href="#hero" class="flex items-center gap-3 group" onclick="playClickSound()">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-royalGold/20 to-iceBlue/20 border border-royalGold/50 flex items-center justify-center relative overflow-hidden">
+                    <svg class="w-6 h-6 text-royalGold group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="rgba(56, 189, 248, 0.25)"/>
+                        <circle cx="12" cy="14" r="3" stroke="#D4AF37"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-display font-bold text-sm md:text-base tracking-wider text-royalGold block leading-none">MISI WUDUK</span>
+                    <span class="text-[11px] text-iceLight/80 tracking-widest uppercase">Exploring The Concept</span>
+                </div>
+            </a>
+
+            <!-- Sistem Kemajuan & Gamifikasi (Progress Bar, Bintang, Lencana) -->
+            <div class="flex-1 max-w-md mx-2 hidden sm:block">
+                <div class="flex justify-between items-center text-xs mb-1.5">
+                    <span class="text-softSilver font-medium flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-iceBlue animate-pulse"></span>
+                        Kemajuan Penerokaan
+                    </span>
+                    <span id="progress-percent" class="font-bold text-royalGold">0%</span>
+                </div>
+                <div class="w-full h-2.5 bg-midnight/80 rounded-full overflow-hidden border border-royalGold/30 p-0.5">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-iceBlue via-royalGold to-goldLight rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Statistik Bintang, Lencana & Butang Audio -->
+            <div class="flex items-center gap-2 md:gap-3">
+                <!-- Kaunter Bintang -->
+                <div class="flex items-center gap-1.5 bg-midnight/70 border border-royalGold/40 px-3 py-1.5 rounded-xl" title="Bintang Terkumpul">
+                    <svg class="w-4 h-4 text-royalGold fill-royalGold" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span id="star-count" class="text-xs md:text-sm font-bold text-pearlWhite">0</span>
+                    <span class="text-xs text-softSilver">/ 15</span>
+                </div>
+
+                <!-- Lencana Pencapaian -->
+                <button onclick="openBadgeModal()" class="flex items-center gap-1.5 bg-gradient-to-r from-royalGold/20 to-midnight border border-royalGold/50 hover:border-royalGold px-3 py-1.5 rounded-xl transition-all text-xs font-semibold text-goldLight" title="Lihat Lencana Pencapaian">
+                    <svg class="w-4 h-4 text-royalGold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    </svg>
+                    <span id="current-rank" class="hidden md:inline">Peneroka Baru</span>
+                </button>
+
+                <!-- Kawalan Muzik Latar -->
+                <button id="btn-music" onclick="toggleMusic()" class="p-2 rounded-xl bg-midnight/70 border border-iceBlue/30 hover:border-iceBlue text-softSilver hover:text-iceBlue transition-all flex items-center gap-1" title="Muzik Latar Ambien (ON/OFF)">
+                    <svg id="icon-music-off" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM3 3l18 18"/>
+                    </svg>
+                    <svg id="icon-music-on" class="w-4 h-4 hidden text-iceBlue animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
+                    </svg>
+                    <span class="text-[10px] font-bold hidden lg:inline" id="music-label">MUZIK: OFF</span>
+                </button>
+
+                <!-- Kawalan Kesan Bunyi (SFX) -->
+                <button id="btn-sfx" onclick="toggleSFX()" class="p-2 rounded-xl bg-midnight/70 border border-royalGold/40 text-royalGold hover:bg-royalGold/10 transition-all flex items-center gap-1" title="Kesan Bunyi Interaktif (ON/OFF)">
+                    <svg id="icon-sfx-on" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                    </svg>
+                    <svg id="icon-sfx-off" class="w-4 h-4 hidden text-softSilver" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                    </svg>
+                    <span class="text-[10px] font-bold hidden lg:inline" id="sfx-label">SFX: ON</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bar Kemajuan Mudah Alih -->
+        <div class="sm:hidden mt-2 glass-panel rounded-xl px-3 py-1.5 flex items-center gap-3">
+            <span class="text-[11px] text-softSilver whitespace-nowrap">Kemajuan:</span>
+            <div class="w-full h-2 bg-midnight/80 rounded-full overflow-hidden border border-royalGold/30">
+                <div id="progress-bar-mobile" class="h-full bg-gradient-to-r from-iceBlue to-royalGold rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+            <span id="progress-percent-mobile" class="text-xs font-bold text-royalGold">0%</span>
+        </div>
+    </header>
+
+    <!-- KANDUNGAN UTAMA -->
+    <main class="relative z-10">
+
+        <!-- =========================================================
+             A. HERO SECTION – WELCOME TO MISI WUDUK
+        ========================================================== -->
+        <section id="hero" class="min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-16 text-center relative overflow-hidden">
+            
+            <!-- Bingkai Gerbang Seni Bina Islam Futuristik -->
+            <div class="max-w-4xl mx-auto relative">
+                
+                <!-- Tagline Atas -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border-royalGold/40 mb-6 animate-fade-in">
+                    <span class="w-2 h-2 rounded-full bg-royalGold animate-ping"></span>
+                    <span class="text-xs md:text-sm font-semibold tracking-wider text-goldLight uppercase">
+                        "Kenali Konsep, Fahami Cabaran, Kuasai Amalan."
+                    </span>
+                </div>
+
+                <!-- Logo Eksklusif Berbentuk Titisan Air dengan Elemen Geometri Islam & Animasi Riak -->
+                <div class="relative w-36 h-36 md:w-44 md:h-44 mx-auto mb-8 flex items-center justify-center animate-float">
+                    <!-- Gelung Riak Air -->
+                    <div class="absolute inset-0 rounded-full border border-iceBlue/40 ripple-ring"></div>
+                    <div class="absolute inset-2 rounded-full border border-royalGold/40 ripple-ring-delay"></div>
+                    
+                    <!-- SVG Logo Titisan Air Geometri -->
+                    <svg class="w-full h-full drop-shadow-[0_0_25px_rgba(56,189,248,0.45)]" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="waterGrad" x1="100" y1="20" x2="100" y2="180" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#BAE6FD" stop-opacity="0.9"/>
+                                <stop offset="50%" stop-color="#38BDF8" stop-opacity="0.6"/>
+                                <stop offset="100%" stop-color="#060E1F" stop-opacity="0.9"/>
+                            </linearGradient>
+                            <linearGradient id="goldStroke" x1="30" y1="20" x2="170" y2="180" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#F3E5AB"/>
+                                <stop offset="50%" stop-color="#D4AF37"/>
+                                <stop offset="100%" stop-color="#996515"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Bintang Oktogram Islam (Rub el Hizb) di Belakang -->
+                        <rect x="48" y="48" width="104" height="104" rx="8" stroke="url(#goldStroke)" stroke-width="1.5" stroke-opacity="0.45" transform="rotate(45 100 100)"/>
+                        <rect x="48" y="48" width="104" height="104" rx="8" stroke="url(#goldStroke)" stroke-width="1.5" stroke-opacity="0.45"/>
+                        
+                        <!-- Bentuk Utama Titisan Air -->
+                        <path d="M100 24C100 24 44 88 44 126C44 156.928 69.0721 182 100 182C130.928 182 156 156.928 156 126C156 88 100 24 100 24Z" fill="url(#waterGrad)" stroke="url(#goldStroke)" stroke-width="3"/>
+                        
+                        <!-- Geometri Dalaman Titisan -->
+                        <path d="M100 58L128 122L100 156L72 122L100 58Z" stroke="#F8FAFC" stroke-width="1.2" stroke-opacity="0.6"/>
+                        <circle cx="100" cy="124" r="18" stroke="url(#goldStroke)" stroke-width="2" fill="rgba(212,175,55,0.15)"/>
+                        <!-- Kilauan Cahaya Air -->
+                        <path d="M76 96C68 108 66 122 70 134" stroke="#F8FAFC" stroke-width="3" stroke-linecap="round" stroke-opacity="0.7"/>
+                    </svg>
+                </div>
+
+                <!-- Tajuk Utama & Subtitle -->
+                <h1 class="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-pearlWhite via-goldLight to-royalGold gold-text-glow mb-4">
+                    KONSEP BERWUDUK
+                </h1>
+                
+                <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-iceLight/90 font-light leading-relaxed mb-10">
+                    "Kenali kepentingan, objektif dan cabaran dalam menguasai ibadah berwuduk."
+                </p>
+
+                <!-- Butang Interaktif Utama -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="startExploration()" class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-royalGold via-amber-500 to-royalGold text-midnight font-bold text-base md:text-lg tracking-wide shadow-[0_0_30px_rgba(212,175,55,0.45)] hover:shadow-[0_0_45px_rgba(212,175,55,0.75)] hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <span>MULAKAN PENEROKAAN</span>
+                        <svg class="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Petunjuk Interaksi Pantas -->
+                <div class="mt-12 flex flex-wrap justify-center gap-6 text-xs text-softSilver">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-iceBlue/10 border border-iceBlue/40 flex items-center justify-center text-iceBlue font-bold">5</span>
+                        <span>Objektif Interaktif</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-royalGold/10 border border-royalGold/40 flex items-center justify-center text-royalGold font-bold">5</span>
+                        <span>Cabaran Murid</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-emerald-400/10 border border-emerald-400/40 flex items-center justify-center text-emerald-400 font-bold">5</span>
+                        <span>Soalan Uji Kefahaman</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             B. INTRODUCTION – APA ITU KONSEP BERWUDUK?
+        ========================================================== -->
+        <section id="pengenalan" class="py-20 px-4 md:px-8 reveal-section">
+            <div class="max-w-5xl mx-auto">
+                <div class="glass-panel-pearl rounded-3xl p-8 md:p-14 relative overflow-hidden gold-glow">
+                    
+                    <!-- Hiasan Sudut Geometri Emas -->
+                    <div class="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-royalGold/50 rounded-tl-3xl pointer-events-none"></div>
+                    <div class="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-royalGold/50 rounded-br-3xl pointer-events-none"></div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        
+                        <!-- Ilustrasi Titisan Air 3D Interaktif -->
+                        <div class="lg:col-span-4 flex justify-center">
+                            <div class="relative w-44 h-44 flex items-center justify-center group cursor-pointer" onclick="triggerWaterDropRipple(this)">
+                                <div class="absolute inset-0 bg-iceBlue/15 rounded-full blur-2xl group-hover:bg-iceBlue/30 transition-all"></div>
+                                <svg class="w-36 h-36 animate-float drop-shadow-[0_15px_25px_rgba(56,189,248,0.5)]" viewBox="0 0 160 160" fill="none">
+                                    <defs>
+                                        <radialGradient id="sphereDrop" cx="35%" cy="30%" r="70%">
+                                            <stop offset="0%" stop-color="#FFFFFF"/>
+                                            <stop offset="25%" stop-color="#BAE6FD"/>
+                                            <stop offset="65%" stop-color="#0284C7"/>
+                                            <stop offset="100%" stop-color="#060E1F"/>
+                                        </radialGradient>
+                                    </defs>
+                                    <path d="M80 14C80 14 28 74 28 106C28 134.719 51.2812 158 80 158C108.719 158 132 134.719 132 106C132 74 80 14 80 14Z" fill="url(#sphereDrop)" stroke="#D4AF37" stroke-width="2"/>
+                                    <!-- Pantulan Cahaya 3D -->
+                                    <ellipse cx="62" cy="88" rx="8" ry="18" transform="rotate(-22 62 88)" fill="white" fill-opacity="0.65"/>
+                                    <circle cx="56" cy="112" r="4" fill="white" fill-opacity="0.5"/>
+                                </svg>
+                                <span class="absolute -bottom-2 text-[11px] text-iceLight/70 tracking-wider uppercase">Klik Titisan</span>
+                            </div>
+                        </div>
+
+                        <!-- Kenyataan Pengenalan Asal (Tepat & Tidak Diubah Maksud) -->
+                        <div class="lg:col-span-8 text-center lg:text-left">
+                            <div class="inline-block px-3 py-1 rounded-lg bg-royalGold/15 border border-royalGold/40 text-royalGold text-xs font-bold tracking-widest uppercase mb-4">
+                                Pengenalan Konsep
+                            </div>
+                            <h2 class="font-display text-2xl md:text-3xl font-bold text-pearlWhite mb-6">
+                                APA ITU KONSEP BERWUDUK?
+                            </h2>
+                            <blockquote class="text-xl sm:text-2xl md:text-3xl font-medium leading-relaxed text-pearlWhite/95 border-l-4 border-royalGold pl-5 py-2 bg-midnight/40 rounded-r-2xl">
+                                "<span class="text-royalGold font-extrabold tracking-wide gold-text-glow">BERWUDUK</span> merupakan salah satu amalan penting dalam kehidupan seorang Muslim dan menjadi syarat sah bagi beberapa ibadah seperti <span class="text-royalGold font-extrabold tracking-wide gold-text-glow">SOLAT</span>."
+                            </blockquote>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             C. LEARNING OBJECTIVES – OBJEKTIF PEMBELAJARAN
+        ========================================================== -->
+        <section id="objektif" class="py-20 px-4 md:px-8 reveal-section">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Pengepala Bahagian -->
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="inline-block px-4 py-1 rounded-full bg-iceBlue/10 border border-iceBlue/30 text-iceBlue text-xs font-bold tracking-widest uppercase mb-3">
+                        Fokus Pembelajaran
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-pearlWhite mb-4">
+                        OBJEKTIF <span class="text-royalGold">PEMBELAJARAN</span>
+                    </h2>
+                    <p class="text-softSilver text-sm sm:text-base">
+                        Klik pada setiap kad 3D di bawah untuk meneroka maklumat terperinci, menjawab soalan refleksi dan mengumpul bintang kemajuan anda.
+                    </p>
+                </div>
+
+                <!-- Grid 5 Kad Objektif Interaktif 3D -->
+                <div id="objectives-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <!-- Kad akan dijana secara dinamik oleh JavaScript supaya interaksi dan status sentiasa selari -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             D. STUDENT CHALLENGES – CABARAN MURID DALAM BERWUDUK
+        ========================================================== -->
+        <section id="cabaran" class="py-20 px-4 md:px-8 reveal-section relative">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Pengepala Bahagian -->
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <span class="inline-block px-4 py-1 rounded-full bg-royalGold/15 border border-royalGold/40 text-royalGold text-xs font-bold tracking-widest uppercase mb-3">
+                        Misi Mengatasi Halangan
+                    </span>
+                    <h2 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-pearlWhite mb-4">
+                        CABARAN MURID <span class="text-iceBlue">DALAM BERWUDUK</span>
+                    </h2>
+                    <p class="text-softSilver text-sm sm:text-base">
+                        Setiap cabaran berkait rapat dengan objektif pembelajaran. Pilih kad cabaran untuk membuka misi rangsangan dan nyatakan kesediaan anda!
+                    </p>
+                </div>
+
+                <!-- Grid 5 Kad Cabaran Interaktif -->
+                <div id="challenges-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <!-- Kad cabaran dijana melalui JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+             E. INTERACTIVE SELF-CHECK – UJI KEFAHAMAN
+        ========================================================== -->
+        <section id="kuiz" class="py-20 px-4 md:px-8 reveal-section">
+            <div class="max-w-4xl mx-auto">
+                <div class="glass-panel-pearl rounded-3xl p-6 sm:p-10 md:p-12 border border-royalGold/40 relative overflow-hidden">
+                    
+                    <!-- Pengepala Kuiz -->
+                    <div class="text-center mb-10">
+                        <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 text-xs font-bold tracking-widest uppercase mb-3">
+                            Penilaian Kendiri
+                        </span>
+                        <h2 class="font-display text-3xl sm:text-4xl font-bold text-pearlWhite mb-3">
+                            UJI <span class="text-royalGold">KEFAHAMAN</span>
+                        </h2>
+                        <p class="text-softSilver text-sm sm:text-base">
+                            Jawab kelima-lima soalan berikut berdasarkan objektif dan cabaran berwuduk yang telah dipelajari.
+                        </p>
+                    </div>
+
+                    <!-- Paparan Skor Semasa Kuiz -->
+                    <div class="flex flex-wrap items-center justify-between gap-4 bg-midnight/70 border border-royalGold/30 rounded-2xl p-4 mb-8">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-royalGold/20 flex items-center justify-center text-royalGold font-bold">
+                                ?
+                            </div>
+                            <div>
+                                <p class="text-xs text-softSilver">Status Soalan Dijawab</p>
+                                <p class="text-sm font-bold text-pearlWhite"><span id="quiz-answered-count">0</span> / 5 Soalan</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-softSilver">Skor Semasa</p>
+                            <p class="text-xl font-display font-bold text-royalGold"><span id="quiz-score">0</span> / 5</p>
+                        </div>
+                    </div>
+
+                    <!-- Senarai 5 Soalan Interaktif -->
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Soalan dijana oleh JavaScript -->
+                    </div>
+
+                    <!-- Panel Keputusan Akhir & Butang Cuba Semula -->
+                    <div id="quiz-result-panel" class="hidden mt-10 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-midnightLight to-midnight border-2 border-royalGold text-center">
+                        <div id="quiz-result-icon" class="w-16 h-16 mx-auto mb-4 rounded-full bg-royalGold/20 flex items-center justify-center text-royalGold">
+                            <!-- Ikon Trofi / Bintang -->
+                        </div>
+                        <h3 id="quiz-result-title" class="font-display text-2xl sm:text-3xl font-bold text-royalGold mb-2">Tahniah!</h3>
+                        <p id="quiz-result-message" class="text-pearlWhite/90 text-sm sm:text-base mb-6 max-w-lg mx-auto"></p>
+                        <button onclick="resetQuiz()" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-royalGold text-midnight font-bold hover:bg-goldLight transition-all shadow-lg cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            <span>CUBA SEMULA</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-royalGold/20 bg-midnight/90 py-10 px-4 text-center relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <p class="font-display text-lg font-bold text-royalGold tracking-wider mb-1">MISI WUDUK: EXPLORING THE CONCEPT</p>
+            <p class="text-xs text-softSilver mb-4">"Kenali Konsep, Fahami Cabaran, Kuasai Amalan."</p>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-midnightLight border border-iceBlue/20 text-[11px] text-iceLight/80">
+                <span>Platform Pembelajaran Digital Interaktif</span>
+                <span>•</span>
+                <span id="footer-status">0% Selesai</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================================================
+         MODAL INTERAKTIF (OBJEKTIF, CABARAN & LENCANA PENCAPAIAN)
+    ========================================================== -->
+    <div id="interactive-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-midnight/85 backdrop-blur-md transition-opacity duration-300">
+        <div id="modal-box" class="glass-panel-pearl w-full max-w-xl rounded-3xl p-6 sm:p-8 border-2 border-royalGold/60 relative transform scale-95 opacity-0 transition-all duration-300 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+            
+            <!-- Butang Tutup Modal -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-midnight/80 border border-softSilver/30 hover:border-royalGold text-softSilver hover:text-royalGold flex items-center justify-center transition-colors cursor-pointer" aria-label="Tutup">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Kandungan Dinamik Modal -->
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- NOTIFIKASI TOAST PENCAPAIAN -->
+    <div id="toast-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-500 pointer-events-none">
+        <div class="glass-panel border-royalGold px-5 py-3.5 rounded-2xl flex items-center gap-3 shadow-2xl">
+            <div class="w-9 h-9 rounded-xl bg-royalGold/20 border border-royalGold flex items-center justify-center text-royalGold">
+                <svg class="w-5 h-5 fill-royalGold" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+            <div>
+                <p id="toast-title" class="text-xs font-bold text-royalGold uppercase tracking-wider">Pencapaian Baru!</p>
+                <p id="toast-msg" class="text-sm text-pearlWhite font-medium">Bintang dikumpul!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT VANILLA – LOGIK INTERAKTIF, 3D & AUDIO
+    ========================================================== -->
+    <script>
+        /**
+         * 1. DATA KANDUNGAN ASAL (TEPAT MENGIKUT KANDUNGAN SLAID)
+         */
+        const objectivesData = [
+            {
+                id: 1,
+                title: "Memahami maksud dan tujuan wuduk.",
+                shortDesc: "Menghayati pengertian berwuduk sebagai amalan penting dan syarat sah ibadah.",
+                reflectionQuestion: "Mengapakah seorang Muslim perlu memahami maksud dan tujuan berwuduk sebelum mendirikan solat?",
+                reflectionHint: "Fikirkan tentang kedudukan wuduk sebagai syarat sah bagi ibadah seperti solat.",
+                iconType: "target"
+            },
+            {
+                id: 2,
+                title: "Membezakan RUKUN dan SUNAT wuduk.",
+                shortDesc: "Mengenal pasti perbezaan antara perkara RUKUN dan perkara SUNAT ketika berwuduk.",
+                reflectionQuestion: "Apakah kepentingan membezakan antara RUKUN dan SUNAT wuduk semasa beramal?",
+                reflectionHint: "Membezakan kedua-duanya membantu memastikan kesempurnaan ibadah wuduk kita.",
+                iconType: "book"
+            },
+            {
+                id: 3,
+                title: "Mengingati URUTAN anggota wuduk.",
+                shortDesc: "Menguasai susunan anggota wuduk secara tepat dari awal hingga akhir.",
+                reflectionQuestion: "Bagaimanakah cara terbaik untuk anda sentiasa mengingati URUTAN anggota wuduk dengan betul?",
+                reflectionHint: "Latihan berterusan dan fokus semasa mengambil wuduk membantu menguatkan ingatan.",
+                iconType: "water"
+            },
+            {
+                id: 4,
+                title: "Melakukan perbuatan wuduk dengan TERTIB.",
+                shortDesc: "Melaksanakan setiap langkah perbuatan wuduk secara teratur dan TERTIB.",
+                reflectionQuestion: "Apakah perbezaan antara mengambil wuduk secara tergesa-gesa berbanding melakukannya dengan TERTIB?",
+                reflectionHint: "Melakukan perbuatan dengan tertib menjamin aturan ibadah dipatuhi.",
+                iconType: "steps"
+            },
+            {
+                id: 5,
+                title: "Mengenal pasti kesalahan tatacara.",
+                shortDesc: "Peka dan mampu mengesan kesilapan dalam tatacara pelaksanaan wuduk.",
+                reflectionQuestion: "Mengapakah murid perlu mengenal pasti kesalahan tatacara berwuduk?",
+                reflectionHint: "Supaya kesilapan dapat dielakkan dan wuduk dilakukan dengan sempurna.",
+                iconType: "checklist"
+            }
+        ];
+
+        const challengesData = [
+            {
+                id: 1,
+                linkedObjectiveId: 1,
+                title: "Memahami maksud dan tujuan berwuduk.",
+                promptQuestion: "Cabaran 1: Adakah anda sering berwuduk sekadar kebiasaan tanpa menghayati maksud dan tujuannya sebagai syarat sah solat?",
+                actionTip: "Niatkan dalam hati tujuan berwuduk untuk menyucikan diri sebelum beribadah."
+            },
+            {
+                id: 2,
+                linkedObjectiveId: 2,
+                title: "Membezakan rukun dan sunat wuduk.",
+                promptQuestion: "Cabaran 2: Bolehkah anda membezakan dengan jelas mana satu perkara rukun dan mana satu perkara sunat dalam wuduk?",
+                actionTip: "Beri perhatian khusus kepada perbezaan antara perkara rukun dan sunat wuduk."
+            },
+            {
+                id: 3,
+                linkedObjectiveId: 3,
+                title: "Mengingati urutan anggota wuduk.",
+                promptQuestion: "Cabaran 3: Pernahkah anda keliru atau terlupa urutan anggota wuduk ketika sedang berwuduk?",
+                actionTip: "Semak semula urutan anggota wuduk secara berperingkat sebelum memulakan wuduk."
+            },
+            {
+                id: 4,
+                linkedObjectiveId: 4,
+                title: "Melakukan perbuatan wuduk dengan tertib.",
+                promptQuestion: "Cabaran 4: Mampukah anda mengawal diri daripada tergesa-gesa agar perbuatan wuduk dilakukan dengan tertib?",
+                actionTip: "Ambil masa dengan tenang dan lakukan setiap perbuatan wuduk secara tertib."
+            },
+            {
+                id: 5,
+                linkedObjectiveId: 5,
+                title: "Mengenal pasti kesalahan tatacara berwuduk.",
+                promptQuestion: "Cabaran 5: Sejauh manakah kepekaan anda dalam mengenal pasti kesalahan tatacara berwuduk yang sering berlaku?",
+                actionTip: "Perhatikan setiap langkah tatacara berwuduk untuk mengenal pasti sebarang kesalahan."
+            }
+        ];
+
+        const quizData = [
+            {
+                id: 1,
+                question: "1. Apakah amalan penting dalam kehidupan seorang Muslim yang menjadi syarat sah bagi beberapa ibadah seperti solat?",
+                options: [
+                    { text: "Berwuduk.", isCorrect: true },
+                    { text: "Membaca buku.", isCorrect: false },
+                    { text: "Bermain.", isCorrect: false }
+                ],
+                explanation: "Tepat sekali! Berwuduk merupakan amalan penting dalam kehidupan seorang Muslim dan menjadi syarat sah bagi beberapa ibadah seperti solat (Objektif 1)."
+            },
+            {
+                id: 2,
+                question: "2. Apakah dua perkara yang perlu dibezakan dalam pembelajaran wuduk?",
+                options: [
+                    { text: "Rukun dan sunat.", isCorrect: true },
+                    { text: "Wajib dan harus.", isCorrect: false },
+                    { text: "Makruh dan haram.", isCorrect: false }
+                ],
+                explanation: "Betul! Murid perlu membezakan antara RUKUN dan SUNAT wuduk dalam pembelajaran ini (Objektif 2)."
+            },
+            {
+                id: 3,
+                question: "3. Apakah perkara yang perlu diingati ketika melakukan wuduk?",
+                options: [
+                    { text: "Urutan anggota wuduk.", isCorrect: true },
+                    { text: "Nama tempat berwuduk.", isCorrect: false },
+                    { text: "Warna pakaian.", isCorrect: false }
+                ],
+                explanation: "Syabas! Mengingati URUTAN anggota wuduk adalah salah satu objektif utama pembelajaran (Objektif 3)."
+            },
+            {
+                id: 4,
+                question: "4. Bagaimanakah perbuatan wuduk perlu dilakukan?",
+                options: [
+                    { text: "Dengan tertib.", isCorrect: true },
+                    { text: "Secara tergesa-gesa.", isCorrect: false },
+                    { text: "Mengikut kesukaan.", isCorrect: false }
+                ],
+                explanation: "Cemerlang! Perbuatan wuduk hendaklah dilakukan dengan TERTIB (Objektif 4)."
+            },
+            {
+                id: 5,
+                question: "5. Apakah perkara yang perlu dikenal pasti oleh murid?",
+                options: [
+                    { text: "Kesalahan tatacara berwuduk.", isCorrect: true },
+                    { text: "Jenis pakaian.", isCorrect: false },
+                    { text: "Nama masjid.", isCorrect: false }
+                ],
+                explanation: "Tepat! Murid perlu mengenal pasti kesalahan tatacara berwuduk agar ibadah sempurna (Objektif 5)."
+            }
+        ];
+
+        /**
+         * 2. KEADAAN APLIKASI & GAMIFIKASI (STATE)
+         */
+        const appState = {
+            exploredObjectives: new Set(),
+            exploredChallenges: new Set(),
+            quizAnswers: {}, // { questionId: { selectedIndex, isCorrect } }
+            sfxEnabled: true,
+            musicEnabled: false,
+            allCompletedCelebrated: false
+        };
+
+        /**
+         * 3. PEMBANTU IKON SVG 3D BERKUALITI TINGGI
+         */
+        function getObjectiveIconSVG(type) {
+            switch(type) {
+                case 'target':
+                    return `<svg class="w-10 h-10 text-royalGold" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="18" stroke="#D4AF37" stroke-width="2.5" fill="rgba(212,175,55,0.1)"/>
+                        <circle cx="24" cy="24" r="11" stroke="#38BDF8" stroke-width="2" fill="rgba(56,189,248,0.15)"/>
+                        <circle cx="24" cy="24" r="4" fill="#F3E5AB"/>
+                        <path d="M36 12L26 22" stroke="#F8FAFC" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>`;
+                case 'book':
+                    return `<svg class="w-10 h-10 text-iceBlue" viewBox="0 0 48 48" fill="none">
+                        <path d="M8 12C8 9.79086 9.79086 8 12 8H22C23.1046 8 24 8.89543 24 10V38C24 36.8954 23.1046 36 22 36H12C9.79086 36 8 34.2091 8 32V12Z" fill="rgba(56,189,248,0.2)" stroke="#38BDF8" stroke-width="2.2"/>
+                        <path d="M40 12C40 9.79086 38.2091 8 36 8H26C24.8954 8 24 8.89543 24 10V38C24 36.8954 24.8954 36 26 36H36C38.2091 36 40 34.2091 40 32V12Z" fill="rgba(212,175,55,0.2)" stroke="#D4AF37" stroke-width="2.2"/>
+                        <path d="M13 16H19M13 22H19M29 16H35M29 22H35" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round"/>
+                    </svg>`;
+                case 'water':
+                    return `<svg class="w-10 h-10 text-iceBlue" viewBox="0 0 48 48" fill="none">
+                        <path d="M24 6C24 6 11 21 11 30C11 37.1797 16.8203 43 24 43C31.1797 43 37 37.1797 37 30C37 21 24 6 24 6Z" fill="rgba(56,189,248,0.25)" stroke="#38BDF8" stroke-width="2.5"/>
+                        <path d="M18 28C18 31.3137 20.6863 34 24 34" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>`;
+                case 'steps':
+                    return `<svg class="w-10 h-10 text-royalGold" viewBox="0 0 48 48" fill="none">
+                        <rect x="8" y="30" width="10" height="10" rx="2" fill="rgba(56,189,248,0.25)" stroke="#38BDF8" stroke-width="2"/>
+                        <rect x="19" y="20" width="10" height="20" rx="2" fill="rgba(212,175,55,0.25)" stroke="#D4AF37" stroke-width="2"/>
+                        <rect x="30" y="10" width="10" height="30" rx="2" fill="rgba(243,229,171,0.3)" stroke="#F3E5AB" stroke-width="2"/>
+                    </svg>`;
+                case 'checklist':
+                default:
+                    return `<svg class="w-10 h-10 text-emerald-400" viewBox="0 0 48 48" fill="none">
+                        <rect x="10" y="8" width="28" height="32" rx="4" fill="rgba(16,185,129,0.15)" stroke="#D4AF37" stroke-width="2.2"/>
+                        <path d="M16 18L19 21L24 15" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M27 18H33" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M16 28L19 31L24 25" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M27 28H33" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round"/>
+                    </svg>`;
+            }
+        }
+
+        /**
+         * 4. PENJANAAN ANTARAMUKA DINAMIK (OBJEKTIF, CABARAN, KUIZ)
+         */
+        function renderObjectives() {
+            const grid = document.getElementById('objectives-grid');
+            grid.innerHTML = objectivesData.map((obj, index) => {
+                const isDone = appState.exploredObjectives.has(obj.id);
+                return `
+                <div onclick="openObjectiveModal(${obj.id})" 
+                     class="interactive-card glass-panel rounded-3xl p-6 sm:p-7 cursor-pointer relative overflow-hidden group flex flex-col justify-between ${isDone ? 'border-emerald-400/70 bg-emerald-950/20' : ''}">
+                    
+                    <!-- Kilauan Latar Kad -->
+                    <div class="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-royalGold/10 blur-2xl group-hover:bg-royalGold/25 transition-all"></div>
+
+                    <div>
+                        <!-- Baris Atas: Nombor & Status -->
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="w-9 h-9 rounded-xl bg-midnight border border-royalGold/50 flex items-center justify-center font-display font-bold text-royalGold text-sm">
+                                0${obj.id}
+                            </span>
+                            ${isDone 
+                                ? `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-emerald-300 text-xs font-bold">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    Diterokai
+                                   </span>`
+                                : `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-iceBlue/10 border border-iceBlue/30 text-iceLight text-xs font-medium group-hover:border-royalGold group-hover:text-royalGold transition-colors">
+                                    Klik Teroka
+                                   </span>`
+                            }
+                        </div>
+
+                        <!-- Ikon 3D -->
+                        <div class="w-16 h-16 rounded-2xl bg-midnight/80 border border-royalGold/30 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-inner">
+                            ${getObjectiveIconSVG(obj.iconType)}
+                        </div>
+
+                        <!-- Tajuk & Penerangan Ringkas -->
+                        <h3 class="text-lg sm:text-xl font-bold text-pearlWhite mb-2.5 group-hover:text-goldLight transition-colors">
+                            ${obj.title}
+                        </h3>
+                        <p class="text-sm text-softSilver leading-relaxed">
+                            ${obj.shortDesc}
+                        </p>
+                    </div>
+
+                    <!-- Footer Kad -->
+                    <div class="mt-6 pt-4 border-t border-royalGold/15 flex items-center justify-between text-xs font-semibold text-royalGold">
+                        <span>Buka Refleksi Objektif</span>
+                        <svg class="w-4 h-4 group-hover:translate-x-1.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function renderChallenges() {
+            const grid = document.getElementById('challenges-grid');
+            grid.innerHTML = challengesData.map((ch) => {
+                const isDone = appState.exploredChallenges.has(ch.id);
+                return `
+                <div onclick="openChallengeModal(${ch.id})"
+                     class="interactive-card glass-panel-pearl rounded-3xl p-6 sm:p-7 cursor-pointer relative overflow-hidden group flex flex-col justify-between ${isDone ? 'border-royalGold bg-royalGold/10' : ''}">
+                    
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-midnight/80 border border-iceBlue/40 text-iceBlue text-xs font-bold">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                <span>CABARAN #${ch.id}</span>
+                            </div>
+
+                            ${isDone 
+                                ? `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-royalGold/25 border border-royalGold text-goldLight text-xs font-bold">
+                                    ★ Selesai
+                                   </span>`
+                                : `<span class="text-xs text-softSilver group-hover:text-iceBlue transition-colors">Misi Aktif</span>`
+                            }
+                        </div>
+
+                        <h3 class="text-lg sm:text-xl font-bold text-pearlWhite mb-3 group-hover:text-iceLight transition-colors">
+                            ${ch.title}
+                        </h3>
+
+                        <!-- Pautan Jelas Kepada Objektif Sepadan -->
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-midnight/60 border border-royalGold/25 text-[11px] text-goldLight/90 mb-3">
+                            <span>Berkait dengan Objektif 0${ch.linkedObjectiveId}</span>
+                        </div>
+
+                        <p class="text-sm text-softSilver line-clamp-2">
+                            ${ch.promptQuestion}
+                        </p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-iceBlue/20 flex items-center justify-between text-xs font-bold text-iceBlue group-hover:text-royalGold transition-colors">
+                        <span>Sahut Cabaran Ini</span>
+                        <span class="px-2.5 py-1 rounded-lg bg-iceBlue/10 group-hover:bg-royalGold/20">Mula →</span>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = quizData.map((q) => {
+                const userAnswer = appState.quizAnswers[q.id];
+                
+                const optionsHTML = q.options.map((opt, optIdx) => {
+                    let btnClass = "bg-midnight/60 border-royalGold/25 hover:border-iceBlue text-pearlWhite";
+                    let badgeHTML = `<span class="w-7 h-7 rounded-lg bg-midnightLight border border-softSilver/30 flex items-center justify-center text-xs font-bold text-softSilver">${String.fromCharCode(65 + optIdx)}</span>`;
+
+                    if (userAnswer !== undefined) {
+                        if (opt.isCorrect) {
+                            btnClass = "bg-emerald-500/20 border-emerald-400 text-emerald-200 shadow-[0_0_15px_rgba(16,185,129,0.25)]";
+                            badgeHTML = `<span class="w-7 h-7 rounded-lg bg-emerald-500 text-midnight flex items-center justify-center text-xs font-extrabold">✓</span>`;
+                        } else if (userAnswer.selectedIndex === optIdx && !opt.isCorrect) {
+                            btnClass = "bg-rose-500/20 border-rose-400 text-rose-200";
+                            badgeHTML = `<span class="w-7 h-7 rounded-lg bg-rose-500 text-white flex items-center justify-center text-xs font-extrabold">✕</span>`;
+                        } else {
+                            btnClass = "bg-midnight/40 border-softSilver/15 text-softSilver/60 opacity-70";
+                        }
+                    }
+
+                    return `
+                    <button onclick="handleQuizAnswer(${q.id}, ${optIdx})" 
+                            class="w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center gap-3.5 cursor-pointer ${btnClass}">
+                        ${badgeHTML}
+                        <span class="font-medium text-sm sm:text-base">${opt.text}</span>
+                    </button>
+                    `;
+                }).join('');
+
+                // Maklum Balas BETUL atau CUBA LAGI
+                let feedbackHTML = '';
+                if (userAnswer !== undefined) {
+                    if (userAnswer.isCorrect) {
+                        feedbackHTML = `
+                        <div class="mt-4 p-4 rounded-2xl bg-emerald-950/60 border border-emerald-400/50 text-emerald-200 text-sm animate-fade-in">
+                            <p class="font-extrabold text-emerald-400 tracking-wide mb-1">✓ BETUL!</p>
+                            <p>${q.explanation}</p>
+                        </div>`;
+                    } else {
+                        feedbackHTML = `
+                        <div class="mt-4 p-4 rounded-2xl bg-rose-950/60 border border-rose-400/50 text-rose-200 text-sm animate-fade-in">
+                            <p class="font-extrabold text-rose-400 tracking-wide mb-1">↻ CUBA LAGI!</p>
+                            <p>Jawapan kurang tepat. Sila pilih jawapan lain berdasarkan objektif pembelajaran wuduk.</p>
+                        </div>`;
+                    }
+                }
+
+                return `
+                <div class="p-5 sm:p-6 rounded-2xl bg-midnight/45 border border-royalGold/20">
+                    <h3 class="text-base sm:text-lg font-bold text-pearlWhite mb-4 leading-snug">
+                        ${q.question}
+                    </h3>
+                    <div class="space-y-3">
+                        ${optionsHTML}
+                    </div>
+                    ${feedbackHTML}
+                </div>
+                `;
+            }).join('');
+        }
+
+        /**
+         * 5. LOGIK MODAL INTERAKTIF (OBJEKTIF, CABARAN & LENCANA)
+         */
+        function openObjectiveModal(id) {
+            playClickSound();
+            const obj = objectivesData.find(o => o.id === id);
+            const isDone = appState.exploredObjectives.has(id);
+
+            const content = `
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-midnight border border-royalGold/50 flex items-center justify-center">
+                        ${getObjectiveIconSVG(obj.iconType)}
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-royalGold uppercase tracking-widest">Objektif Pembelajaran 0${obj.id}</span>
+                        <h3 class="text-xl sm:text-2xl font-bold text-pearlWhite">${obj.title}</h3>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-midnight/70 border border-iceBlue/30 mb-5">
+                    <p class="text-sm text-iceLight leading-relaxed">${obj.shortDesc}</p>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-gradient-to-br from-royalGold/15 to-midnight border border-royalGold/40 mb-6">
+                    <div class="flex items-center gap-2 text-royalGold font-bold text-xs uppercase tracking-wider mb-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Soalan Refleksi Ringkas</span>
+                    </div>
+                    <p class="text-pearlWhite font-medium text-sm sm:text-base mb-2">${obj.reflectionQuestion}</p>
+                    <p class="text-xs text-softSilver italic">Panduan: ${obj.reflectionHint}</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-end gap-3">
+                    <button onclick="closeModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-softSilver/30 text-softSilver hover:text-pearlWhite text-sm font-medium cursor-pointer">
+                        Tutup
+                    </button>
+                    <button onclick="completeObjective(${obj.id})" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-royalGold to-amber-500 text-midnight font-bold text-sm hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>${isDone ? 'Telah Difahami ★' : 'Saya Faham'}</span>
+                    </button>
+                </div>
+            `;
+
+            showModal(content);
+        }
+
+        function completeObjective(id) {
+            if (!appState.exploredObjectives.has(id)) {
+                appState.exploredObjectives.add(id);
+                playSuccessSound();
+                showToast("Objektif Diterokai!", "+1 Bintang dikumpul untuk kemajuan anda.");
+                updateGamification();
+                renderObjectives();
+            } else {
+                playClickSound();
+            }
+            closeModal();
+        }
+
+        function openChallengeModal(id) {
+            playClickSound();
+            const ch = challengesData.find(c => c.id === id);
+            const linkedObj = objectivesData.find(o => o.id === ch.linkedObjectiveId);
+            const isDone = appState.exploredChallenges.has(id);
+
+            const content = `
+                <div class="mb-4">
+                    <span class="inline-block px-3 py-1 rounded-full bg-iceBlue/15 border border-iceBlue/40 text-iceBlue text-xs font-bold uppercase tracking-wider mb-2">
+                        Cabaran Murid #0${ch.id}
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-pearlWhite">${ch.title}</h3>
+                </div>
+
+                <!-- Hubungan Jelas dengan Objektif Pembelajaran -->
+                <div class="p-3.5 rounded-xl bg-midnight/80 border border-royalGold/30 mb-4 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-royalGold/20 text-royalGold flex items-center justify-center font-bold text-xs shrink-0">0${linkedObj.id}</span>
+                    <div class="text-xs">
+                        <span class="text-softSilver block">Objektif Pembelajaran Berkaitan:</span>
+                        <span class="text-goldLight font-semibold">${linkedObj.title}</span>
+                    </div>
+                </div>
+
+                <!-- Soalan Rangsangan -->
+                <div class="p-5 rounded-2xl bg-gradient-to-br from-iceBlue/15 to-midnight border border-iceBlue/40 mb-6">
+                    <p class="text-xs font-bold text-iceBlue uppercase tracking-wider mb-2">Soalan Rangsangan Minda</p>
+                    <p class="text-pearlWhite font-medium text-sm sm:text-base mb-3">${ch.promptQuestion}</p>
+                    <div class="p-3 rounded-xl bg-midnight/70 text-xs text-iceLight/90 border-l-2 border-royalGold">
+                        <strong>Tindakan Disyorkan:</strong> ${ch.actionTip}
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-end gap-3">
+                    <button onclick="closeModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-softSilver/30 text-softSilver hover:text-pearlWhite text-sm font-medium cursor-pointer">
+                        Nanti Dulu
+                    </button>
+                    <button onclick="completeChallenge(${ch.id})" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-iceBlue to-sky-500 text-midnight font-bold text-sm hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <span>${isDone ? 'Cabaran Telah Disahut ★' : 'Saya Akan Cuba'}</span>
+                    </button>
+                </div>
+            `;
+
+            showModal(content);
+        }
+
+        function completeChallenge(id) {
+            if (!appState.exploredChallenges.has(id)) {
+                appState.exploredChallenges.add(id);
+                playSuccessSound();
+                showToast("Cabaran Disahut!", "+1 Bintang! Teruskan usaha menguasai wuduk.");
+                updateGamification();
+                renderChallenges();
+            } else {
+                playClickSound();
+            }
+            closeModal();
+        }
+
+        function openBadgeModal() {
+            playClickSound();
+            const stars = calculateTotalStars();
+            const objCount = appState.exploredObjectives.size;
+            const chCount = appState.exploredChallenges.size;
+            const quizCorrectCount = Object.values(appState.quizAnswers).filter(a => a.isCorrect).length;
+
+            const badges = [
+                {
+                    name: "Wuduk Explorer",
+                    desc: "Meneroka semua 5 Objektif Pembelajaran.",
+                    unlocked: objCount === 5
+                },
+                {
+                    name: "Penakluk Cabaran",
+                    desc: "Menyatakan kesediaan pada semua 5 Cabaran Murid.",
+                    unlocked: chCount === 5
+                },
+                {
+                    name: "Cendekiawan Wuduk",
+                    desc: "Menjawab semua 5 soalan Uji Kefahaman dengan betul.",
+                    unlocked: quizCorrectCount === 5
+                }
+            ];
+
+            const content = `
+                <div class="text-center mb-6">
+                    <h3 class="font-display text-2xl font-bold text-royalGold mb-1">PENCAPAIAN & LENCANA</h3>
+                    <p class="text-xs text-softSilver">Kumpul semua 15 bintang untuk membuka keseluruhan lencana!</p>
+                </div>
+
+                <!-- Ringkasan Status -->
+                <div class="grid grid-cols-3 gap-3 mb-6 text-center">
+                    <div class="p-3 rounded-2xl bg-midnight/70 border border-royalGold/30">
+                        <span class="text-lg font-bold text-pearlWhite block">${objCount}/5</span>
+                        <span class="text-[11px] text-softSilver">Objektif</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-midnight/70 border border-iceBlue/30">
+                        <span class="text-lg font-bold text-pearlWhite block">${chCount}/5</span>
+                        <span class="text-[11px] text-softSilver">Cabaran</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-midnight/70 border border-emerald-400/30">
+                        <span class="text-lg font-bold text-pearlWhite block">${quizCorrectCount}/5</span>
+                        <span class="text-[11px] text-softSilver">Kuiz Betul</span>
+                    </div>
+                </div>
+
+                <!-- Senarai Lencana -->
+                <div class="space-y-3 mb-6">
+                    ${badges.map(b => `
+                        <div class="p-4 rounded-2xl border flex items-center gap-4 ${b.unlocked ? 'bg-royalGold/15 border-royalGold' : 'bg-midnight/50 border-softSilver/20 opacity-60'}">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${b.unlocked ? 'bg-royalGold text-midnight' : 'bg-midnightLight text-softSilver'}">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold text-sm text-pearlWhite">${b.name}</h4>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${b.unlocked ? 'bg-emerald-500/20 text-emerald-300' : 'bg-midnight text-softSilver'}">
+                                        ${b.unlocked ? 'TERBUKA' : 'TERKUNCI'}
+                                    </span>
+                                </div>
+                                <p class="text-xs text-softSilver mt-0.5">${b.desc}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-royalGold text-midnight font-bold text-sm hover:bg-goldLight transition-colors cursor-pointer">
+                    Teruskan Pembelajaran
+                </button>
+            `;
+
+            showModal(content);
+        }
+
+        function showModal(htmlContent) {
+            const modal = document.getElementById('interactive-modal');
+            const box = document.getElementById('modal-box');
+            document.getElementById('modal-content').innerHTML = htmlContent;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            requestAnimationFrame(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+                box.classList.add('scale-100', 'opacity-100');
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('interactive-modal');
+            const box = document.getElementById('modal-box');
+            
+            box.classList.remove('scale-100', 'opacity-100');
+            box.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 250);
+        }
+
+        /**
+         * 6. LOGIK KUIZ INTERAKTIF & PEMARKAHAN AUTOMATIK
+         */
+        function handleQuizAnswer(questionId, selectedIndex) {
+            const questionObj = quizData.find(q => q.id === questionId);
+            const selectedOption = questionObj.options[selectedIndex];
+            
+            // Jika sudah dijawab betul sebelum ini, jangan ubah markah
+            const alreadyCorrect = appState.quizAnswers[questionId]?.isCorrect === true;
+
+            appState.quizAnswers[questionId] = {
+                selectedIndex: selectedIndex,
+                isCorrect: selectedOption.isCorrect
+            };
+
+            if (selectedOption.isCorrect) {
+                playSuccessSound();
+                if (!alreadyCorrect) {
+                    showToast("Jawapan Betul!", "+1 Bintang ditambah ke skor anda.");
+                }
+            } else {
+                playErrorSound();
+            }
+
+            renderQuiz();
+            updateQuizSummary();
+            updateGamification();
+        }
+
+        function updateQuizSummary() {
+            const totalAnswered = Object.keys(appState.quizAnswers).length;
+            const correctCount = Object.values(appState.quizAnswers).filter(a => a.isCorrect).length;
+
+            document.getElementById('quiz-answered-count').textContent = totalAnswered;
+            document.getElementById('quiz-score').textContent = correctCount;
+
+            const resultPanel = document.getElementById('quiz-result-panel');
+            if (totalAnswered === quizData.length) {
+                resultPanel.classList.remove('hidden');
+                const titleEl = document.getElementById('quiz-result-title');
+                const msgEl = document.getElementById('quiz-result-message');
+                const iconEl = document.getElementById('quiz-result-icon');
+
+                if (correctCount === quizData.length) {
+                    titleEl.textContent = "TAHNIAH! SKOR PENUH 5/5!";
+                    msgEl.textContent = "Anda telah menguasai keseluruhan konsep asas, objektif dan cabaran berwuduk dengan cemerlang!";
+                    iconEl.innerHTML = `<svg class="w-9 h-9 fill-royalGold" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+                    triggerCelebrationConfetti();
+                } else {
+                    titleEl.textContent = `SKOR ANDA: ${correctCount} / 5`;
+                    msgEl.textContent = "Syabas atas percubaan anda! Anda boleh membetulkan soalan yang bertanda 'Cuba Lagi' atau tekan butang di bawah untuk mengulang semula kuiz.";
+                    iconEl.innerHTML = `<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+                }
+            } else {
+                resultPanel.classList.add('hidden');
+            }
+        }
+
+        function resetQuiz() {
+            playClickSound();
+            appState.quizAnswers = {};
+            renderQuiz();
+            updateQuizSummary();
+            updateGamification();
+        }
+
+        /**
+         * 7. PENGIRAAN KEMAJUAN & GAMIFIKASI AUTOMATIK
+         */
+        function calculateTotalStars() {
+            const objStars = appState.exploredObjectives.size; // Max 5
+            const chStars = appState.exploredChallenges.size;   // Max 5
+            const quizStars = Object.values(appState.quizAnswers).filter(a => a.isCorrect).length; // Max 5
+            return objStars + chStars + quizStars; // Jumlah Max 15
+        }
+
+        function updateGamification() {
+            const totalStars = calculateTotalStars();
+            const maxStars = 15;
+            const percentage = Math.round((totalStars / maxStars) * 100);
+
+            // Kemas kini HUD Desktop & Mobile
+            document.getElementById('star-count').textContent = totalStars;
+            document.getElementById('progress-percent').textContent = `${percentage}%`;
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            
+            document.getElementById('progress-percent-mobile').textContent = `${percentage}%`;
+            document.getElementById('progress-bar-mobile').style.width = `${percentage}%`;
+            document.getElementById('footer-status').textContent = `${percentage}% Selesai (${totalStars}/15 Bintang)`;
+
+            // Kemas kini Pangkat / Lencana Semasa
+            const rankEl = document.getElementById('current-rank');
+            if (percentage === 100) {
+                rankEl.textContent = "Master Wuduk";
+                if (!appState.allCompletedCelebrated) {
+                    appState.allCompletedCelebrated = true;
+                    triggerCelebrationConfetti();
+                    showToast("MISI SEMPURNA 100%!", "Semua objektif, cabaran dan kuiz berjaya dikuasai!");
+                }
+            } else if (appState.exploredObjectives.size === 5) {
+                rankEl.textContent = "Wuduk Explorer";
+            } else if (totalStars >= 5) {
+                rankEl.textContent = "Pelajar Aktif";
+            } else {
+                rankEl.textContent = "Peneroka Baru";
+            }
+        }
+
+        function triggerCelebrationConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 90,
+                    spread: 75,
+                    origin: { y: 0.6 },
+                    colors: ['#D4AF37', '#38BDF8', '#F8FAFC', '#F3E5AB']
+                });
+            }
+        }
+
+        /**
+         * 8. INTERAKSI UI & NOTIFIKASI TOAST
+         */
+        function startExploration() {
+            playWaterDropSound();
+            document.getElementById('pengenalan').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function triggerWaterDropRipple(el) {
+            playWaterDropSound();
+            el.classList.add('scale-110');
+            setTimeout(() => el.classList.remove('scale-110'), 300);
+        }
+
+        let toastTimeout;
+        function showToast(title, message) {
+            const toast = document.getElementById('toast-notification');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-msg').textContent = message;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
+        }
+
+        /**
+         * 9. SISTEM AUDIO AMBIEN & KESAN BUNYI (TONE.JS)
+         * Muzik tidak dimainkan secara automatik sehingga pengguna menekan butang.
+         */
+        let ambientLoop = null;
+        let ambientSynth = null;
+
+        async function toggleMusic() {
+            await Tone.start();
+            appState.musicEnabled = !appState.musicEnabled;
+
+            const iconOn = document.getElementById('icon-music-on');
+            const iconOff = document.getElementById('icon-music-off');
+            const label = document.getElementById('music-label');
+
+            if (appState.musicEnabled) {
+                iconOn.classList.remove('hidden');
+                iconOff.classList.add('hidden');
+                label.textContent = "MUZIK: ON";
+                startAmbientMusic();
+                showToast("Muzik Latar Diaktifkan", "Suasana tenang pembelajaran Islamik.");
+            } else {
+                iconOn.classList.add('hidden');
+                iconOff.classList.remove('hidden');
+                label.textContent = "MUZIK: OFF";
+                stopAmbientMusic();
+            }
+        }
+
+        function startAmbientMusic() {
+            if (!ambientSynth) {
+                const reverb = new Tone.Reverb({ decay: 6, wet: 0.65 }).toDestination();
+                ambientSynth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 1.5, decay: 1.2, sustain: 0.6, release: 3 },
+                    volume: -18
+                }).connect(reverb);
+
+                // Skala Hijaz / Pentatonik Tenang
+                const chords = [
+                    ["D4", "A4", "E5"],
+                    ["C4", "G4", "D5"],
+                    ["Bb3", "F4", "C5"],
+                    ["A3", "E4", "C#5"]
+                ];
+                let step = 0;
+                ambientLoop = new Tone.Loop((time) => {
+                    ambientSynth.triggerAttackRelease(chords[step % chords.length], "2n", time);
+                    step++;
+                }, "1m");
+            }
+            Tone.Transport.start();
+            ambientLoop.start(0);
+        }
+
+        function stopAmbientMusic() {
+            if (ambientLoop) {
+                ambientLoop.stop();
+            }
+        }
+
+        function toggleSFX() {
+            appState.sfxEnabled = !appState.sfxEnabled;
+            const iconOn = document.getElementById('icon-sfx-on');
+            const iconOff = document.getElementById('icon-sfx-off');
+            const label = document.getElementById('sfx-label');
+
+            if (appState.sfxEnabled) {
+                iconOn.classList.remove('hidden');
+                iconOff.classList.add('hidden');
+                label.textContent = "SFX: ON";
+                playClickSound();
+            } else {
+                iconOn.classList.add('hidden');
+                iconOff.classList.remove('hidden');
+                label.textContent = "SFX: OFF";
+            }
+        }
+
+        function playClickSound() {
+            if (!appState.sfxEnabled || typeof Tone === 'undefined') return;
+            try {
+                const synth = new Tone.Synth({
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.005, decay: 0.08, sustain: 0, release: 0.05 },
+                    volume: -16
+                }).toDestination();
+                synth.triggerAttackRelease("G5", "32n");
+            } catch (e) {}
+        }
+
+        function playWaterDropSound() {
+            if (!appState.sfxEnabled || typeof Tone === 'undefined') return;
+            try {
+                const synth = new Tone.Synth({
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.1 },
+                    volume: -12
+                }).toDestination();
+                const now = Tone.now();
+                synth.triggerAttackRelease("E5", "16n", now);
+                synth.frequency.exponentialRampToValueAtTime(1100, now + 0.15);
+            } catch (e) {}
+        }
+
+        function playSuccessSound() {
+            if (!appState.sfxEnabled || typeof Tone === 'undefined') return;
+            try {
+                const synth = new Tone.PolySynth(Tone.Synth, {
+                    oscillator: { type: "triangle" },
+                    envelope: { attack: 0.02, decay: 0.3, sustain: 0.1, release: 0.4 },
+                    volume: -12
+                }).toDestination();
+                const now = Tone.now();
+                synth.triggerAttackRelease(["C5", "E5", "G5"], "8n", now);
+                synth.triggerAttackRelease(["G5", "C6"], "4n", now + 0.15);
+            } catch (e) {}
+        }
+
+        function playErrorSound() {
+            if (!appState.sfxEnabled || typeof Tone === 'undefined') return;
+            try {
+                const synth = new Tone.Synth({
+                    oscillator: { type: "sine" },
+                    envelope: { attack: 0.01, decay: 0.25, sustain: 0, release: 0.1 },
+                    volume: -14
+                }).toDestination();
+                synth.triggerAttackRelease("A3", "8n");
+            } catch (e) {}
+        }
+
+        /**
+         * 10. LATAR BELAKANG 3D SENI BINA & SIMULASI AIR (THREE.JS)
+         */
+        function initThreeBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x060E1F, 0.032);
+
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 4, 14);
+            camera.lookAt(0, 0, 0);
+
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Pencahayaan Sinematik
+            const ambientLight = new THREE.AmbientLight(0x38BDF8, 0.5);
+            scene.add(ambientLight);
+
+            const goldPointLight = new THREE.PointLight(0xD4AF37, 2.2, 45);
+            goldPointLight.position.set(0, 8, -4);
+            scene.add(goldPointLight);
+
+            const icePointLight = new THREE.PointLight(0x38BDF8, 1.8, 40);
+            icePointLight.position.set(-8, 4, 6);
+            scene.add(icePointLight);
+
+            // Permukaan Kolam Air Berombak Halus
+            const waterGeo = new THREE.PlaneGeometry(60, 60, 48, 48);
+            const waterMat = new THREE.MeshStandardMaterial({
+                color: 0x0A2540,
+                emissive: 0x06162D,
+                roughness: 0.15,
+                metalness: 0.85,
+                wireframe: false
+            });
+            const waterMesh = new THREE.Mesh(waterGeo, waterMat);
+            waterMesh.rotation.x = -Math.PI / 2;
+            waterMesh.position.y = -2.5;
+            scene.add(waterMesh);
+
+            // Tiang Seni Bina Islam Moden (Kiri & Kanan)
+            const pillarGeo = new THREE.CylinderGeometry(0.35, 0.45, 14, 8);
+            const pillarMat = new THREE.MeshStandardMaterial({
+                color: 0x0F172A,
+                roughness: 0.3,
+                metalness: 0.6
+            });
+            const goldRingGeo = new THREE.TorusGeometry(0.48, 0.05, 8, 24);
+            const goldMat = new THREE.MeshStandardMaterial({
+                color: 0xD4AF37,
+                emissive: 0x664D03,
+                metalness: 0.9,
+                roughness: 0.2
+            });
+
+            const pillarPositions = [
+                [-7, -5], [7, -5],
+                [-10, -14], [10, -14]
+            ];
+
+            pillarPositions.forEach(([px, pz]) => {
+                const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+                pillar.position.set(px, 4, pz);
+                scene.add(pillar);
+
+                const ringBottom = new THREE.Mesh(goldRingGeo, goldMat);
+                ringBottom.rotation.x = Math.PI / 2;
+                ringBottom.position.set(px, -2.2, pz);
+                scene.add(ringBottom);
+
+                const ringTop = new THREE.Mesh(goldRingGeo, goldMat);
+                ringTop.rotation.x = Math.PI / 2;
+                ringTop.position.set(px, 6.5, pz);
+                scene.add(ringTop);
+            });
+
+            // Zarah Cahaya / Titisan Halus Terapung
+            const particleCount = 140;
+            const particleGeo = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 32;
+                positions[i + 1] = Math.random() * 14 - 2;
+                positions[i + 2] = (Math.random() - 0.5) * 28;
+            }
+            particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const particleMat = new THREE.PointsMaterial({
+                color: 0xBAE6FD,
+                size: 0.12,
+                transparent: true,
+                opacity: 0.65
+            });
+            const particles = new THREE.Points(particleGeo, particleMat);
+            scene.add(particles);
+
+            // Interaksi Kamera Halus Berdasarkan Pergerakan Tetikus
+            let mouseX = 0;
+            let mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
+                mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            // Responsif Saiz Tetingkap
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Gelung Animasi
+            const clock = new THREE.Clock();
+            const posAttr = waterGeo.attributes.position;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                // Gerakan Ombak Air Realistik
+                for (let i = 0; i < posAttr.count; i++) {
+                    const x = posAttr.getX(i);
+                    const y = posAttr.getY(i);
+                    const wave = Math.sin(x * 0.4 + elapsedTime * 1.4) * 0.12 +
+                                 Math.cos(y * 0.4 + elapsedTime * 1.1) * 0.12;
+                    posAttr.setZ(i, wave);
+                }
+                posAttr.needsUpdate = true;
+
+                // Zarah Terapung Perlahan
+                particles.rotation.y = elapsedTime * 0.03;
+                particles.position.y = Math.sin(elapsedTime * 0.5) * 0.3;
+
+                // Kamera Mengikut Tetikus Secara Halus
+                camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.03;
+                camera.position.y += (4 - mouseY * 0.8 - camera.position.y) * 0.03;
+                camera.lookAt(0, 0.5, -2);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+
+        /**
+         * 11. ANIMASI SCROLL REVEAL & INISIALISASI LAMAN
+         */
+        function initScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.reveal-section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        window.onload = function() {
+            renderObjectives();
+            renderChallenges();
+            renderQuiz();
+            updateGamification();
+            initScrollReveal();
+            initThreeBackground();
+        };
+    </script>
+</body>
+</html>
